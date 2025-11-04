@@ -9,12 +9,12 @@ public class ZOmega {
 	//w^6 = -w^2
 	//w^7 = -w^3
 	//w^8 = 1
-	private int [] coeff;
+	private long [] coeff;
 	private static final ZOmega DELTA = new ZOmega(1, 1, 0, 0);
 
 	
 	public ZOmega() { //for making a delta
-		coeff = new int[4];
+		coeff = new long[4];
 		coeff[0] = 1;
 		coeff[1] = 1;
 		coeff[2] = 0;
@@ -22,19 +22,19 @@ public class ZOmega {
 	}
 	
 	public ZOmega(ZOmega other) { //for copying fr
-	    int[] c = other.getCoeffs();
-	    this.coeff = new int[]{c[0], c[1], c[2], c[3]};
+	    long[] c = other.getCoeffs();
+	    this.coeff = new long[]{c[0], c[1], c[2], c[3]};
 	}
 	
-	public ZOmega(int a, int b, int c, int d) {
-		coeff = new int[4];
+	public ZOmega(long a, long b, long c, long d) {
+		coeff = new long[4];
 		coeff[0] = a;
 		coeff[1] = b;
 		coeff[2] = c;
 		coeff[3] = d;
 	}
 	
-	public int[] getCoeffs() {
+	public long[] getCoeffs() {
 		return this.coeff;
 	}
 	 public ZOmega add(ZOmega other) {
@@ -47,13 +47,13 @@ public class ZOmega {
 	    }
 	    
 	    public ZOmega multiplication(ZOmega other) { //0 -> 1, 1 -> w, 2 -> w^2, 3 -> w^3, 4 -> w^4, 5 -> w^5, 6 -> w^6
-	    	int [] unSimplified = new int[7];
+	    	long [] unSimplified = new long[7];
 	    	for (int i = 0; i < 4; i++) {
 	    		for (int j = 0; j < 4; j++) {
 	    			unSimplified[i + j] += coeff[i] * other.coeff[j];
 	    		}
 	    	}
-	    	int [] zOmega = new int[4];
+	    	long [] zOmega = new long[4];
 	    	zOmega[0] = unSimplified[0] - unSimplified[4];
 	    	zOmega[1] = unSimplified[1] - unSimplified[5];
 	    	zOmega[2] = unSimplified[2] - unSimplified[6];
@@ -61,18 +61,18 @@ public class ZOmega {
 	    	return new ZOmega(zOmega[0], zOmega[1], zOmega[2], zOmega[3]);
 	    }
 	    
-	    private static boolean allEven(int a, int b, int c, int d) {
+	    private static boolean allEven(long a, long b, long c, long d) {
 	        return ( (a & 1) | (b & 1) | (c & 1) | (d & 1) ) == 0;
 	    }
 	    
 	    public void mult(ZOmega other) { //0 -> 1, 1 -> w, 2 -> w^2, 3 -> w^3, 4 -> w^4, 5 -> w^5, 6 -> w^6
-	    	int [] unSimplified = new int[7];
+	    	long [] unSimplified = new long[7];
 	    	for (int i = 0; i < 4; i++) {
 	    		for (int j = 0; j < 4; j++) {
 	    			unSimplified[i + j] += coeff[i] * other.coeff[j];
 	    		}
 	    	}
-	    	int [] zOmega = new int[4];
+	    	long [] zOmega = new long[4];
 	    	zOmega[0] = unSimplified[0] - unSimplified[4];
 	    	zOmega[1] = unSimplified[1] - unSimplified[5];
 	    	zOmega[2] = unSimplified[2] - unSimplified[6];
@@ -85,18 +85,18 @@ public class ZOmega {
 	    }
 	    
 	    
-	    public int [] factorOutAllDeltas() {  	//immutable
-		     int m = 0;
-		     int sdeFOut = 0;
+	    public long [] factorOutAllDeltas() {  	//immutable
+		     long m = 0;
+		     long sdeFOut = 0;
 		     ZOmega delta = new ZOmega(1, 1, 0, 0);
-		     int [] tempC = new int[4];
+		     long [] tempC = new long[4];
 		     tempC[0] = coeff[0];
 		     tempC[1] = coeff[1];
 		     tempC[2] = coeff[2];
 		     tempC[3] = coeff[3];
 		     
 		     if (tempC[0] == 0 && tempC[1] == 0 && tempC[2] == 0 && tempC[3] == 0) {
-		    	 int [] allZero = new int[5];
+		    	 long [] allZero = new long[5];
 		    	 allZero[0] = 0;
 		    	 allZero[1] = 0;
 		    	 allZero[2] = 0;
@@ -114,15 +114,15 @@ public class ZOmega {
 		    	 m++;
 		     }
 		     
-		     int t = 0; 
+		     long t = 0; 
 		     ZOmega temp = new ZOmega(tempC[0], tempC[1], tempC[2], tempC[3]);
 		     while (temp.coeff[0] %2 != 0 || temp.coeff[1] %2 != 0 || temp.coeff[2] %2 != 0  || temp.coeff[3] %2 != 0 ) { //chawnged this loop
 		    	 temp = temp.multiplication(delta);
 		    	 t++;
 
-		    	 //this.printZOmega();
+		    	 //this.prlongZOmega();
 		     }
-		     int r = (4 - (t % 4)) % 4; //how many deltas u can factor out
+		     long r = (4 - (t % 4)) % 4; //how many deltas u can factor out
 		     if (r != 0) {
 		    	 temp.coeff[0] /= 2;
 		    	 temp.coeff[1] /= 2;
@@ -131,7 +131,7 @@ public class ZOmega {
 		     }
 		     
 		     sdeFOut = (4 * m) + r;
-		     int [] info = new int[5];
+		     long [] info = new long[5];
 		     info[0] = temp.coeff[0];
 		     info[1] = temp.coeff[1];
 		     info[2] = temp.coeff[2];
@@ -142,10 +142,10 @@ public class ZOmega {
 	    }
 	    
 	    public boolean isDivByDelta() {
-	        int a = coeff[0];
-	        int b = coeff[1];
-	        int c = coeff[2];
-	        int d = coeff[3];
+	        long a = coeff[0];
+	        long b = coeff[1];
+	        long c = coeff[2];
+	        long d = coeff[3];
 
 	        return (a - b + c - d) == 0;
 	    }
@@ -204,8 +204,8 @@ public class ZOmega {
 	        	return false;
 	        }
 	        ZOmega other = (ZOmega) o;
-	        int[] a = this.coeff; 
-	        int [] b = other.coeff;
+	        long[] a = this.coeff; 
+	        long [] b = other.coeff;
 	        return a[0]==b[0] && a[1]==b[1] && a[2]==b[2] && a[3]==b[3];
 	    }
 

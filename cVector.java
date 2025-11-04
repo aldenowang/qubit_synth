@@ -2,9 +2,9 @@
 public class cVector {
 	
 	private ZOmega [] col = new ZOmega[2];
-	private int k;
+	private long k;
 	
-	public cVector(ZOmega x, ZOmega y, int k) {
+	public cVector(ZOmega x, ZOmega y, long k) {
 		
 		col[0] = x;
 		col[1] = y;
@@ -12,13 +12,13 @@ public class cVector {
 	}
 	
 	private static ZOmega negative(ZOmega z){
-	    int[] c = z.getCoeffs();
+	    long[] c = z.getCoeffs();
 	    return new ZOmega(-c[0], -c[1], -c[2], -c[3]);
 	}
 	
 	
 	public void applyHGate() {
-		
+		/*
 		 ZOmega new0 = col[0].add(col[1]);         // x + y
 		 ZOmega new1 = col[0].add(negative(col[1])); // x - y
 		 col[0] = new0;
@@ -26,17 +26,23 @@ public class cVector {
 		 
 		 ZOmega tempX = col[0];
 		 ZOmega tempY = col[1];
-		 
-		 /*
-		 int xSDE = tempX.factorOutAllDeltas()[4];
-		 int ySDE = tempY.factorOutAllDeltas()[4];
-		 int minDrop = Math.min(xSDE, ySDE);
-		 
-		 col[0] = Tester.reduceExactly(tempX, minDrop);
-		 col[1] = Tester.reduceExactly(tempY, minDrop);
-		 this.k = this.k + (2 - minDrop);
-		 */
 		 this.k += 2;
+		*/
+		ZOmega new0 = col[0].add(col[1]);
+		ZOmega new1 = col[0].add(negative(col[1]));
+		col[0] = new0;
+		col[1] = new1;
+		
+		ZOmega tempX = col[0];
+		ZOmega tempY = col[1];
+		
+		long xSDE = tempX.factorOutAllDeltas()[4];
+		long ySDE = tempY.factorOutAllDeltas()[4];
+		long minDrop = Math.min(xSDE, ySDE);
+		
+		col[0] = Tester.reduceExactly(tempX, minDrop);
+		col[1] = Tester.reduceExactly(tempY, minDrop);
+		this.k = this.k + (2 - minDrop);
 		 
 		 
 	}
@@ -56,16 +62,17 @@ public class cVector {
 		case 7: w = new ZOmega(0, 0, 0, -1); break;
 		default: w = new ZOmega(1, 0, 0, 0); 
 		}
-		col[1] = col[1].multiplication(w);
+		ZOmega temp = new ZOmega(col[1]);
+		col[1] = temp.multiplication(w);
 	}
 	
 
 	
-	public void incrementK(int n) {
+	public void incrementK(long n) {
 		k += n;
 	}
 	
-	public int getK() {
+	public long getK() {
 		return k;
 	}
 	public ZOmega[] getCol() {

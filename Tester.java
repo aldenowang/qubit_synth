@@ -6,11 +6,10 @@ public class Tester {
 	
 	//infinite looping right now
 	
-	
 	public static void main(String[] args) {
+	
 		String gateString = "";
-		
-		int loopLength = (int)(Math.random()*20 + 30);
+		int loopLength = (int)(Math.random()*30 + 20);
 		boolean firstLoop = true;
 		ZOmega one = new ZOmega(1, 0, 0, 0);
 		ZOmega zero = new ZOmega(0, 0, 0, 0);
@@ -42,9 +41,9 @@ public class Tester {
 		
 		
 		String testedGateString = "";	
-		int dropX = tester.getX().factorOutAllDeltas()[4];
-		int dropY = tester.getY().factorOutAllDeltas()[4];
-		int minDrop = Math.min(dropX, dropY);
+		long dropX = tester.getX().factorOutAllDeltas()[4];
+		long dropY = tester.getY().factorOutAllDeltas()[4];
+		long minDrop = Math.min(dropX, dropY);
 		
 		ZOmega temporaryX = new ZOmega(tester.getX());
 		ZOmega temporaryY = new ZOmega(tester.getY());
@@ -53,13 +52,54 @@ public class Tester {
 		tester.setY(reduceExactly(temporaryY, minDrop));
 		tester.incrementK(-minDrop);
 		
-		while (tester.getK() > 0) {
+		int iter = 0;
+		final int MAX_ITERS = 50;
+		while (tester.getK() > 0 && iter++ < MAX_ITERS) {
+	
+			if (tester.getK() <= 2) {
+				tester.getX().printZOmega();
+				tester.getY().printZOmega();
+			}
+			
+			long bestDrop = -1;
+			int maxT = 0;
+
+			for (int i = 0; i < 8; i++) {
+			    cVector temp = new cVector(new ZOmega(tester.getX()), new ZOmega(tester.getY()), tester.getK());
+			    long sdeBefore = temp.getK();
+			    temp.applyTGate(i);
+			    temp.applyHGate();
+			    
+			    
+			    if (temp.getX().isZero()) {
+			    	continue;
+			    }
+			    
+			    long xDrop2 = temp.getX().factorOutAllDeltas()[4];
+			    long yDrop2 = temp.getY().factorOutAllDeltas()[4];
+			    long sum = Math.min(xDrop2, yDrop2);
+			    
+			    ZOmega tempX = new ZOmega(temp.getX());
+			    ZOmega tempY = new ZOmega(temp.getY());
+			    temp.setX(reduceExactly(tempX, sum));
+			    temp.setY(reduceExactly(tempY, sum));
+			    
+			    long sdeReduced = sdeBefore - temp.getK();
+			    
+			    if (sdeReduced > bestDrop) {
+			    	maxT = i;
+			    	bestDrop = sdeReduced;
+			    }
+  	
+			  
+			}
+
+			/*
 			int bestDrop = -1;
 			int maxT = 0;
 
 			for (int i = 0; i < 8; i++) {
 			    cVector temp = new cVector(new ZOmega(tester.getX()), new ZOmega(tester.getY()), tester.getK());
-			    int sum = 0;
 			    temp.applyTGate(i);
 			   
 			    temp.applyHGate();
@@ -70,7 +110,7 @@ public class Tester {
 			    
 			    int xDrop2 = temp.getX().factorOutAllDeltas()[4];
 			    int yDrop2 = temp.getY().factorOutAllDeltas()[4];
-			    sum += Math.min(xDrop2, yDrop2);
+			    int sum = Math.min(xDrop2, yDrop2);
 
 			    if (sum > bestDrop) {
 			    	maxT = i;
@@ -79,25 +119,34 @@ public class Tester {
   	
 			  
 			}
-
-			if (bestDrop <= 0) {
+			*/
+			if (bestDrop < 0) {
 			    break;
 			}
 			
 			System.out.println("sde is: " + tester.getK());			
+			long kBefore = tester.getK();
 			tester.applyTGate(maxT);
-			
 			tester.applyHGate();
+
+
         	System.out.println("sde after gate sequence: " + tester.getK());
 
 			ZOmega tempX2 = new ZOmega(tester.getX());
 			ZOmega tempY2 = new ZOmega(tester.getY());
-			int x2Drop = tempX2.factorOutAllDeltas()[4];
-			int y2Drop = tempY2.factorOutAllDeltas()[4];
-			int drop = Math.min(x2Drop, y2Drop);
+			long x2Drop = tempX2.factorOutAllDeltas()[4];
+			long y2Drop = tempY2.factorOutAllDeltas()[4];
+			long drop = Math.min(x2Drop, y2Drop);
 			tester.setX(reduceExactly(tempX2, drop));
 			tester.setY(reduceExactly(tempY2, drop));
-			tester.incrementK(-drop);
+			
+			long sdeReduction = kBefore - tester.getK();
+			
+			tester.incrementK(-sdeReduction);
+			
+			if (tester.getK() >= kBefore) {
+				//break;
+			}
 			
 	        	if (maxT == 0) {
 	        		testedGateString = "H " + testedGateString;
@@ -106,7 +155,7 @@ public class Tester {
 		        	testedGateString = "H" + "T^" + maxT + " " + testedGateString;
 	        	}
 	        	
-	        	System.out.println("sde taken out is: " + drop);
+	        	System.out.println("sde taken out is: " + sdeReduction);
 		}
 
 		
@@ -189,30 +238,30 @@ public class Tester {
 				
 			}
 			
-			private static boolean allEven(int[] t) {
-			    return (t[0] & 1) == 0 && (t[1] & 1) == 0 && (t[2] & 1) == 0 && (t[3] & 1) == 0;
-			}
+		private static boolean allEven(long[] t) {
+		    return (t[0] & 1L) == 0 && (t[1] & 1L) == 0 && (t[2] & 1L) == 0 && (t[3] & 1L) == 0;
+		}
 
 			
-			public static ZOmega reduceExactly(ZOmega z, int d) {
-				    if (d < 0) {
+			public static ZOmega reduceExactly(ZOmega z, long d) {
+			    if (d < 0) {
 				    	throw new IllegalArgumentException("d must be >= 0");
 				    }
 				    
-				    int[] t = z.getCoeffs().clone();
-				    int m = d / 4;
-				    int r = d % 4; //remainder
+			    long[] t = z.getCoeffs().clone();
+			    long m = d / 4;
+			    long r = d % 4; //remainder
 				    
-				    for (int i = 0; i < m; i++) {
+			    for (long i = 0; i < m; i++) {
 				        if (!allEven(t)) {
 				            throw new RuntimeException("Expected all-even before /2 (group-of-4 part).");
 				        }
 				    
-				        t[0] /= 2; t[1] /= 2; t[2] /= 2; t[3] /= 2;
+			        t[0] /= 2; t[1] /= 2; t[2] /= 2; t[3] /= 2;
 				    }
 				    if (r > 0) {
-				        int need = 4 - r; 
-				        for (int k = 0; k < need; k++) {
+			        long need = 4 - r; 
+			        for (long k = 0; k < need; k++) {
 				        	ZOmega temp = new ZOmega(t[0], t[1], t[2], t[3]);
 				        	ZOmega DELTA = new ZOmega(1, 1, 0, 0);
 				        	ZOmega newT = temp.multiplication(DELTA);
@@ -228,7 +277,7 @@ public class Tester {
 				        
 				    }
 					
-				    return new ZOmega(t[0], t[1], t[2], t[3]);
+			    return new ZOmega(t[0], t[1], t[2], t[3]);
 				}
 			
 		

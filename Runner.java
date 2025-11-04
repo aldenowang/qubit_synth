@@ -31,9 +31,9 @@ public class Runner {
 		        
 		        while (co.getK() > 0) {
 		        	//int [] sdeReduction = new int[8];
-		        	int sdeBefore = new ZOmega(co.getX()).factorOutAllDeltas()[4];
+		        	long sdeBefore = new ZOmega(co.getX()).factorOutAllDeltas()[4];
 	        		int bestR = -1;
-	        		int bestDrop = 0;
+	        		long bestDrop = 0;
 	        		int maxT = 0;
 	        		
 		        	for (int i = 0; i < 8; i++) { //8 possible values
@@ -41,7 +41,7 @@ public class Runner {
 		        		temp.applyTGate(i);
 		        		temp.applyHGate();
 		        		//check failing case
-		        		int drop;
+		        		long drop;
 		        		//System.out.println(temp.getX().isZero());
 		        		if (temp.getX().isZero() == true) {
 		        			continue;
@@ -71,10 +71,10 @@ public class Runner {
 		        	
 		        	ZOmega tempX = new ZOmega(co.getX());
 		        	ZOmega tempY = new ZOmega(co.getY());
-		        	int [] xInfo = tempX.factorOutAllDeltas();
-		        	int [] yInfo = tempY.factorOutAllDeltas();
+		        	long [] xInfo = tempX.factorOutAllDeltas();
+		        	long [] yInfo = tempY.factorOutAllDeltas();
 		        	
-		        	int sdeDrop = Math.min(xInfo[4], yInfo[4]);
+		        	long sdeDrop = Math.min(xInfo[4], yInfo[4]);
 		        	
 		            ZOmega temp2X = new ZOmega(co.getX());
 		            ZOmega temp2Y = new ZOmega(co.getY());
@@ -210,7 +210,7 @@ public class Runner {
 				
 			}
 			
-			private static boolean allEven(int[] t) {
+			private static boolean allEven(long[] t) {
 			    return (t[0] & 1) == 0 && (t[1] & 1) == 0 && (t[2] & 1) == 0 && (t[3] & 1) == 0;
 			}
 
@@ -218,12 +218,12 @@ public class Runner {
 			 * Contract:
 			 *   Caller guarantees that z actually has SDE >= d 
 			 */
-			private static ZOmega reduceExactly(ZOmega z, int d) {
+			private static ZOmega reduceExactly(ZOmega z, long d) {
 			    if (d < 0) throw new IllegalArgumentException("d must be >= 0");
-			    int[] t = z.getCoeffs().clone();
+			    long[] t = z.getCoeffs().clone();
 
-			    int m = d / 4;
-			    int r = d % 4;
+			    long m = d / 4;
+			    long r = d % 4;
 
 			    for (int i = 0; i < m; i++) {
 			        if (!allEven(t)) {
@@ -236,7 +236,7 @@ public class Runner {
 			    if (r > 0) {
 			    	
 			    	
-			        int need = 4 - r; 
+			        long need = 4 - r; 
 			        for (int k = 0; k < need; k++) {
 			        	ZOmega temp = new ZOmega(t[0], t[1], t[2], t[3]);
 			        	ZOmega DELTA = new ZOmega(1, 1, 0, 0);
