@@ -31,27 +31,36 @@ public class Runner {
 		        
 		        while (co.getK() > 0) {
 		        	//int [] sdeReduction = new int[8];
-		        	long sdeBefore = new ZOmega(co.getX()).factorOutAllDeltas()[4];
+		        	//long sdeBefore = new ZOmega(co.getX()).factorOutAllDeltas()[4];
 	        		int bestR = -1;
 	        		long bestDrop = 0;
 	        		int maxT = 0;
-	        		
+	        		cVector temp = co;
 		        	for (int i = 0; i < 8; i++) { //8 possible values
-		        		cVector temp = new cVector(new ZOmega(co.getX()), new ZOmega(co.getY()), co.getK());
-		        		temp.applyTGate(i);
-		        		temp.applyHGate();
-		        		//check failing case
-		        		long drop;
-		        		//System.out.println(temp.getX().isZero());
-		        		if (temp.getX().isZero() == true) {
-		        			continue;
-		        		} else {
-			        		drop = temp.getX().factorOutAllDeltas()[4];
-		        		}
-		        		if (drop > bestDrop) {
-		        			bestDrop = drop;
-		        			maxT = i;
-		        		}
+		        		long sdeBefore = temp.getK();
+					    temp.applyTGate(i);
+					    temp.applyHGate();
+					    
+					    
+					    if (temp.getX().isZero()) {
+					    	continue;
+					    }
+					    
+					    long xDrop2 = temp.getX().factorOutAllDeltas()[4];
+					    long yDrop2 = temp.getY().factorOutAllDeltas()[4];
+					    long sum = Math.min(xDrop2, yDrop2);
+					    
+					    ZOmega tempX = new ZOmega(temp.getX());
+					    ZOmega tempY = new ZOmega(temp.getY());
+					    temp.setX(reduceExactly(tempX, sum));
+					    temp.setY(reduceExactly(tempY, sum));
+					    
+					    long sdeReduced = sdeBefore - temp.getK();
+					    
+					    if (sdeReduced > bestDrop) {
+					    	maxT = i;
+					    	bestDrop = sdeReduced;
+					    }
 		        
 		        		  
 		        	}
@@ -63,6 +72,7 @@ public class Runner {
 		        	System.out.println("bestDrop = " + bestDrop);
 		        	System.out.println("maxT = " + maxT);
 					*/
+		        	long sdeBefore = co.getK();
 		        	co.applyTGate(maxT);
 		        	co.applyHGate();
 		        	if (bestDrop <= 0) {
@@ -74,15 +84,17 @@ public class Runner {
 		        	long [] xInfo = tempX.factorOutAllDeltas();
 		        	long [] yInfo = tempY.factorOutAllDeltas();
 		        	
-		        	long sdeDrop = Math.min(xInfo[4], yInfo[4]);
+		        	long sdeFactoredOut = Math.min(xInfo[4], yInfo[4]);
 		        	
 		            ZOmega temp2X = new ZOmega(co.getX());
 		            ZOmega temp2Y = new ZOmega(co.getY());
-		            co.setX(reduceExactly(temp2X, sdeDrop));
-		            co.setY(reduceExactly(temp2Y, sdeDrop));
+		            co.setX(reduceExactly(temp2X, sdeFactoredOut));
+		            co.setY(reduceExactly(temp2Y, sdeFactoredOut));
+		        	long sdeAfter = co.getK();
+		        	long sdeDropped = sdeBefore - sdeAfter;
 		        	
 		        	System.out.println("sde after gate sequence: " + co.getK());
-		        	co.incrementK(-sdeDrop);
+		        	co.incrementK(-sdeDropped);
 		        	
 		        	if (maxT == 0) {
 		        		gateString = "H " + gateString;
@@ -93,7 +105,7 @@ public class Runner {
 		        	}
 		        	//gateString = gateString + maxT + "^T" + "H ";
 		        	
-		        	System.out.println("sde taken out is: " + xInfo[4]);
+		        	System.out.println("sde taken out is: " + sdeDropped);
 		        	System.out.println("sde is: " + co.getK());
 
 		        }
