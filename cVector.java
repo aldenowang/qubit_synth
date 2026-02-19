@@ -18,16 +18,7 @@ public class cVector {
 	
 	
 	public void applyHGate() {
-		/*
-		 ZOmega new0 = col[0].add(col[1]);         // x + y
-		 ZOmega new1 = col[0].add(negative(col[1])); // x - y
-		 col[0] = new0;
-		 col[1] = new1;
-		 
-		 ZOmega tempX = col[0];
-		 ZOmega tempY = col[1];
-		 this.k += 2;
-		*/
+
 		ZOmega new0 = col[0].add(col[1]);
 		ZOmega new1 = col[0].add(negative(col[1]));
 		col[0] = new0;
@@ -36,13 +27,21 @@ public class cVector {
 		ZOmega tempX = col[0];
 		ZOmega tempY = col[1];
 		
-		long xSDE = tempX.factorOutAllDeltas()[4];
-		long ySDE = tempY.factorOutAllDeltas()[4];
-		long minDrop = Math.min(xSDE, ySDE);
+		long [] x = tempX.factorOutAllDeltas();
+		long [] y = tempY.factorOutAllDeltas();
 		
-		col[0] = Tester.reduceExactly(tempX, minDrop);
-		col[1] = Tester.reduceExactly(tempY, minDrop);
-		this.k = this.k + (2 - minDrop);
+	
+		col[0] = new ZOmega(x[0], x[1], x[2], x[3]);
+		col[1] = new ZOmega(y[0], y[1], y[2], y[3]);
+		
+		long sdeDrop = 0;
+		if (x[4] > y[4]) {
+			sdeDrop = x[4];
+		} else {
+			sdeDrop = y[4];
+		}
+
+		this.k = this.k + (2 - sdeDrop);
 		 
 		 
 	}

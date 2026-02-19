@@ -85,28 +85,20 @@ public class ZOmega {
 	    }
 	    
 	    
-	    public long [] factorOutAllDeltas() {  	//immutable
-		     long m = 0;
+	    
+	    
+	    public long [] factorOutAllDeltas() {  	
+	    	 long m = 0;
+	    	 long r = 0;
 		     long sdeFOut = 0;
 		     ZOmega delta = new ZOmega(1, 1, 0, 0);
 		     long [] tempC = new long[4];
 		     tempC[0] = coeff[0];
-		     tempC[1] = coeff[1];
+		     tempC[1] = coeff[1]; 
 		     tempC[2] = coeff[2];
 		     tempC[3] = coeff[3];
-		     
-		     if (tempC[0] == 0 && tempC[1] == 0 && tempC[2] == 0 && tempC[3] == 0) {
-		    	 long [] allZero = new long[5];
-		    	 allZero[0] = 0;
-		    	 allZero[1] = 0;
-		    	 allZero[2] = 0;
-		    	 allZero[3] = 0;
-		    	 allZero[4] = 0;
-		    	 return allZero;
-		     }
 
-		     
-		     while (tempC[0] % 2 == 0 && tempC[1] % 2 == 0 && tempC[2] % 2 == 0 && tempC[3] % 2 == 0) {
+		     while (tempC[0] % 2 == 0 && tempC[1] % 2 == 0 && tempC[2] % 2 == 0 && tempC[3] % 2 == 0 && !(tempC[0] == 0 && tempC[1] == 0 && tempC[2] == 0 && tempC[3] == 0)) {
 		    	 tempC[0] /= 2;
 		    	 tempC[1] /= 2;
 		    	 tempC[2] /= 2;
@@ -114,31 +106,35 @@ public class ZOmega {
 		    	 m++;
 		     }
 		     
-		     long t = 0; 
-		     ZOmega temp = new ZOmega(tempC[0], tempC[1], tempC[2], tempC[3]);
-		     while (temp.coeff[0] %2 != 0 || temp.coeff[1] %2 != 0 || temp.coeff[2] %2 != 0  || temp.coeff[3] %2 != 0 ) { //chawnged this loop
-		    	 temp = temp.multiplication(delta);
-		    	 t++;
+		     ZOmega z;
+		     if (Math.abs(tempC[0] % 2) == 1 && Math.abs(tempC[1] % 2) == 0 && Math.abs(tempC[2]) % 2 == 1 && tempC[3] % 2 == 0) {
+			     z = new ZOmega((tempC[1] - tempC[3])/2, (tempC[2] + tempC[0])/2, (tempC[1] + tempC[3])/2, (tempC[2] - tempC[0])/2);
+			     r = 1;
 
-		    	 //this.prlongZOmega();
 		     }
-		     long r = (4 - (t % 4)) % 4; //how many deltas u can factor out
-		     if (r != 0) {
-		    	 temp.coeff[0] /= 2;
-		    	 temp.coeff[1] /= 2;
-		    	 temp.coeff[2] /= 2;
-		    	 temp.coeff[3] /= 2;
+		     else if (tempC[0] % 2 == 0 && Math.abs(tempC[1] % 2) == 1 && tempC[2] % 2 == 0 && Math.abs(tempC[3] % 2) == 1) {
+			     z = new ZOmega((tempC[1] - tempC[3])/2, (tempC[2] + tempC[0])/2, (tempC[1] + tempC[3])/2, (tempC[2] - tempC[0])/2);
+			     r = 1;
+
+		     }
+		     else if (Math.abs(tempC[0] % 2) == 1 && Math.abs(tempC[1] % 2) == 1 && Math.abs(tempC[2] % 2) == 1 && Math.abs(tempC[3] % 2) == 1) {
+			    z = new ZOmega((tempC[1] - tempC[3])/2, (tempC[2] + tempC[0])/2, (tempC[1] + tempC[3])/2, (tempC[2] - tempC[0])/2);
+			     r = 1;
+		     } else {
+		    	 z = new ZOmega(tempC[0], tempC[1], tempC[2], tempC[3]);
+		    	 
 		     }
 		     
-		     sdeFOut = (4 * m) + r;
+		     sdeFOut = (4 * m) + 2 * r;
 		     long [] info = new long[5];
-		     info[0] = temp.coeff[0];
-		     info[1] = temp.coeff[1];
-		     info[2] = temp.coeff[2];
-		     info[3] = temp.coeff[3];
+		     info[0] = z.coeff[0];
+		     info[1] = z.coeff[1];
+		     info[2] = z.coeff[2];
+		     info[3] = z.coeff[3];
 		     info[4] = sdeFOut;
 
-		    return info;	     
+		     return info; 
+		    
 	    }
 	    
 	    public boolean isDivByDelta() {

@@ -21,16 +21,8 @@ public class U2Matrix {
     	this.a = a;
        	this.b = b;
     	this.c = c;
- 
     	this.d = d;
     }
-    
-    /*
-    public boolean normalizedColumn(DOmega a, DOmega c) {
-    	DOmega normSquared = a.multiplication(a.conjugate()).add(c.multiplication(c.conjugate()));
-        return normSquared.equals(DOmega.ONE);
-    }
-    */
     
     
     public boolean isUnitary() {

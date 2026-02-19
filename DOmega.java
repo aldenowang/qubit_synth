@@ -223,16 +223,6 @@ public class DOmega {
     }
     
 
-    
-    private void appendTerm(StringBuilder sb, int num, int denom, String var) {
-        if (denom == 1) {
-            sb.append(num);
-        } else {
-            sb.append("(").append(num).append("/").append(denom).append(")");
-        }
-        sb.append(var);
-    }
-    
     public void printDOmega() {
     	System.out.println("");
     	for (int i = 0; i < 4; i++) {

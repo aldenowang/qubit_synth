@@ -36,10 +36,10 @@ public class Tester {
 		System.out.println("sde is: " + tester.getK());
 		System.out.println("");
 		System.out.println("actual gate string is: " + gateString);
-		String reducedGateString = reduceGateSequence(gateString);
-		System.out.println("reduced act string is: " + reducedGateString);
+		//String reducedGateString = reduceGateSequence(gateString);
+		//System.out.println("reduced act string is: " + reducedGateString);
 		
-		
+		/*
 		String testedGateString = "";	
 		long dropX = tester.getX().factorOutAllDeltas()[4];
 		long dropY = tester.getY().factorOutAllDeltas()[4];
@@ -51,6 +51,7 @@ public class Tester {
 		tester.setX(reduceExactly(temporaryX, minDrop));
 		tester.setY(reduceExactly(temporaryY, minDrop));
 		tester.incrementK(-minDrop);
+		*/
 		
 		int iter = 0;
 		final int MAX_ITERS = 50;
@@ -64,105 +65,36 @@ public class Tester {
 			long bestDrop = -1;
 			int maxT = 0;
 
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 4; i++) {
 			    cVector temp = new cVector(new ZOmega(tester.getX()), new ZOmega(tester.getY()), tester.getK());
 			    long sdeBefore = temp.getK();
 			    temp.applyTGate(i);
 			    temp.applyHGate();
 			    
-			    
 			    if (temp.getX().isZero()) {
 			    	continue;
 			    }
 			    
-			    long xDrop2 = temp.getX().factorOutAllDeltas()[4];
-			    long yDrop2 = temp.getY().factorOutAllDeltas()[4];
-			    long sum = Math.min(xDrop2, yDrop2);
-			    
-			    ZOmega tempX = new ZOmega(temp.getX());
-			    ZOmega tempY = new ZOmega(temp.getY());
-			    temp.setX(reduceExactly(tempX, sum));
-			    temp.setY(reduceExactly(tempY, sum));
-			    
-			    long sdeReduced = sdeBefore - temp.getK();
-			    
-			    if (sdeReduced > bestDrop) {
-			    	maxT = i;
-			    	bestDrop = sdeReduced;
+			    long [] xInfo = temp.getX().factorOutAllDeltas();
+			    long [] yInfo = temp.getY().factorOutAllDeltas();
+			    long sdeAfter = temp.getK();
+
+			    if (sdeAfter > sdeBefore) {
+			    	gateString = gateString + "H" + "T^" + i;
+			    	tester = new cVector(temp.getX(), temp.getY(), temp.getK());
+			    	break;
 			    }
   	
 			  
 			}
-
-			/*
-			int bestDrop = -1;
-			int maxT = 0;
-
-			for (int i = 0; i < 8; i++) {
-			    cVector temp = new cVector(new ZOmega(tester.getX()), new ZOmega(tester.getY()), tester.getK());
-			    temp.applyTGate(i);
-			   
-			    temp.applyHGate();
-			    
-			    if (temp.getX().isZero()) {
-			    	continue;
-			    }
-			    
-			    int xDrop2 = temp.getX().factorOutAllDeltas()[4];
-			    int yDrop2 = temp.getY().factorOutAllDeltas()[4];
-			    int sum = Math.min(xDrop2, yDrop2);
-
-			    if (sum > bestDrop) {
-			    	maxT = i;
-			    	bestDrop = sum;
-			    }
-  	
-			  
-			}
-			*/
-			if (bestDrop < 0) {
-			    break;
-			}
 			
-			System.out.println("sde is: " + tester.getK());			
-			long kBefore = tester.getK();
-			tester.applyTGate(maxT);
-			tester.applyHGate();
-
-
-        	System.out.println("sde after gate sequence: " + tester.getK());
-
-			ZOmega tempX2 = new ZOmega(tester.getX());
-			ZOmega tempY2 = new ZOmega(tester.getY());
-			long x2Drop = tempX2.factorOutAllDeltas()[4];
-			long y2Drop = tempY2.factorOutAllDeltas()[4];
-			long drop = Math.min(x2Drop, y2Drop);
-			tester.setX(reduceExactly(tempX2, drop));
-			tester.setY(reduceExactly(tempY2, drop));
-			
-			long sdeReduction = kBefore - tester.getK();
-			
-			tester.incrementK(-sdeReduction);
-			
-			if (tester.getK() >= kBefore) {
-				//break;
-			}
-			
-	        	if (maxT == 0) {
-	        		testedGateString = "H " + testedGateString;
-	        	}
-	        	else {
-		        	testedGateString = "H" + "T^" + maxT + " " + testedGateString;
-	        	}
-	        	
-	        	System.out.println("sde taken out is: " + sdeReduction);
 		}
 
 		
 		System.out.println();
-		System.out.println("unreduced gate string is: " + testedGateString);
-		String reducedString = reduceGateSequence(testedGateString);
-		System.out.println("reduced gate string is: " + reducedString);
+		//System.out.println("unreduced gate string is: " + testedGateString);
+		//String reducedString = reduceGateSequence(testedGateString);
+		//System.out.println("reduced gate string is: " + reducedString);
 		 
 		 
 	        

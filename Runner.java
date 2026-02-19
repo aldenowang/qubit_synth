@@ -1,17 +1,18 @@
 import java.util.ArrayList;
 
 public class Runner {
-	private static String gateString = "";
-	//filler general method will edit later to match my class
+	
 	public static void main(String[] args) {
-		        ZOmega DELTA = new ZOmega(1, 1, 0, 0);
+		
 		        System.out.println("Enter the first column of a U(2) matrix (second column will be determined automatically):");
+		        System.out.println("a   b");
+		        System.out.println("c   d");
 		       
 		        // Input first column elements
 		        System.out.println("Enter the element in the top-left part of the matrix in the ring D[w]");
 		        DOmega a = readDOmega(); 
 		        System.out.println("");
-		        System.out.println("Enter element b (bottom-left, complex number):");
+		        System.out.println("Enter element c (bottom-left, complex number):");
 		        DOmega c = readDOmega();
 		        
 		        
@@ -26,181 +27,21 @@ public class Runner {
 		        boolean isUnitary = matrix.isUnitary();
 		        System.out.println("Matrix is unitary: " + isUnitary);
 		        
-		        cVector co = convertToZOmega(matrix.getA(), matrix.getC());
-		        String gateString = "";
-		        
-		        while (co.getK() > 0) {
-		        	//int [] sdeReduction = new int[8];
-		        	//long sdeBefore = new ZOmega(co.getX()).factorOutAllDeltas()[4];
-	        		int bestR = -1;
-	        		long bestDrop = 0;
-	        		int maxT = 0;
-	        		cVector temp = co;
-		        	for (int i = 0; i < 8; i++) { //8 possible values
-		        		long sdeBefore = temp.getK();
-					    temp.applyTGate(i);
-					    temp.applyHGate();
-					    
-					    
-					    if (temp.getX().isZero()) {
-					    	continue;
-					    }
-					    
-					    long xDrop2 = temp.getX().factorOutAllDeltas()[4];
-					    long yDrop2 = temp.getY().factorOutAllDeltas()[4];
-					    long sum = Math.min(xDrop2, yDrop2);
-					    
-					    ZOmega tempX = new ZOmega(temp.getX());
-					    ZOmega tempY = new ZOmega(temp.getY());
-					    temp.setX(reduceExactly(tempX, sum));
-					    temp.setY(reduceExactly(tempY, sum));
-					    
-					    long sdeReduced = sdeBefore - temp.getK();
-					    
-					    if (sdeReduced > bestDrop) {
-					    	maxT = i;
-					    	bestDrop = sdeReduced;
-					    }
-		        
-		        		  
-		        	}
-
-		        	
-		        	System.out.println();
-		        	/*
-		        	System.out.println("sdeBefore = " + sdeBefore);
-		        	System.out.println("bestDrop = " + bestDrop);
-		        	System.out.println("maxT = " + maxT);
-					*/
-		        	long sdeBefore = co.getK();
-		        	co.applyTGate(maxT);
-		        	co.applyHGate();
-		        	if (bestDrop <= 0) {
-		        		//throw new RuntimeException("No SDE progress ts step; check arithmetic");
-		        	}
-		        	
-		        	ZOmega tempX = new ZOmega(co.getX());
-		        	ZOmega tempY = new ZOmega(co.getY());
-		        	long [] xInfo = tempX.factorOutAllDeltas();
-		        	long [] yInfo = tempY.factorOutAllDeltas();
-		        	
-		        	long sdeFactoredOut = Math.min(xInfo[4], yInfo[4]);
-		        	
-		            ZOmega temp2X = new ZOmega(co.getX());
-		            ZOmega temp2Y = new ZOmega(co.getY());
-		            co.setX(reduceExactly(temp2X, sdeFactoredOut));
-		            co.setY(reduceExactly(temp2Y, sdeFactoredOut));
-		        	long sdeAfter = co.getK();
-		        	long sdeDropped = sdeBefore - sdeAfter;
-		        	
-		        	System.out.println("sde after gate sequence: " + co.getK());
-		        	co.incrementK(-sdeDropped);
-		        	
-		        	if (maxT == 0) {
-		        		gateString = "H " + gateString;
-		        		break;
-		        	}
-		        	else {
-			        	gateString = "H" + "T^" + maxT + " " + gateString;
-		        	}
-		        	//gateString = gateString + maxT + "^T" + "H ";
-		        	
-		        	System.out.println("sde taken out is: " + sdeDropped);
-		        	System.out.println("sde is: " + co.getK());
-
+		        if (isUnitary) {
+		        	 cVector co = convertToZOmega(matrix.getA(), matrix.getC());
+				     reduceColumnVector(co);
+		        }
+		        else {
+			        System.out.println("Must enter a valid unitary matrix");
 		        }
 		       
-		        System.out.println("Unreduced gate sequence: " + gateString);
-		        gateString = reduceGateSequence(gateString);
-		        System.out.println("Reduced gate sequence: " + gateString);
-		      }
-	
-	private static String reduceGateSequence(String gateString) {
-	    gateString = gateString.replace(" ", ""); // remove spaces if there are
-
-	    //remove all "T^0" 
-	    for (int i = 0; i + 3 <= gateString.length(); ) {
-	        if (gateString.startsWith("T^0", i)) {
-	            gateString = gateString.substring(0, i) + gateString.substring(i + 3);
-	            if (i > 0) {
-	            	i--; 
-	            }
-	        } else {
-	            i++;
-	        }
-	    }
-
-	    //cancel HH
-	    boolean changed = true;
-	    while (changed) {
-	        changed = false;
-	        for (int i = 0; i + 2 <= gateString.length(); ) {
-	            if (gateString.startsWith("HH", i)) {
-	                gateString = gateString.substring(0, i) + gateString.substring(i + 2);
-	                changed = true;
-	                if (i > 0) i--; 
-	            } else {
-	                i++;
-	            }
-	        }
-	    }
-
-	    // remove all ^
-	    for (int i = 0; i < gateString.length(); ) {
-	        if (gateString.charAt(i) == '^') {
-	            gateString = gateString.substring(0, i) + gateString.substring(i + 1);
-	        } else {
-	            i++;
-	        }
-	    }
-
-	    //"HT5T5...T1" (all T's between H's).
-	    // store T segments between H's
-	    java.util.ArrayList<String> tSegments = new java.util.ArrayList<>();
-	    for (int i = 0; i < gateString.length(); ) {
-	        if (gateString.charAt(i) != 'H') {
-	        	i++; continue; 
-	        } 
-	        
-	        i++; 
-	        int start = i;
-	        while (i < gateString.length() && gateString.charAt(i) != 'H') i++;
-	        if (i > start) {
-	            tSegments.add(gateString.substring(start, i));
-	        }
-	    }
-
-	    //combine T segment like terms and reduce by mod 8
-	    StringBuilder fGateString = new StringBuilder();
-	    for (int j = 0; j < tSegments.size(); j++) {
-	        String seg = tSegments.get(j);
-	        int sum = 0;
-	        for (int g = 0; g < seg.length(); g++) {
-	            char ch = seg.charAt(g);
-	            if (Character.isDigit(ch)) sum += (ch - '0');
-	        }
-	        sum %= 8; 
-	        if (sum == 0) {
-	        	continue; 
-	        }
-	        
-	        if (fGateString.length() > 0) {
-	        	fGateString.append(' ');
-	        }
-	        fGateString.append('H').append("T^").append(sum);
-	    }
-
-	    return fGateString.toString();
-	}
-	
-	
+		        
+		       
+          }	
 		
 		
-		private static String reverseStr(String str) {
-			 return new StringBuilder(str).reverse().toString();
-		}
-		
-			public static cVector convertToZOmega(DOmega x, DOmega y) {
+	
+	public static cVector convertToZOmega(DOmega x, DOmega y) {
 					
 				DOmega delta = new DOmega(1, 1, 1, 1, 0, 1, 0, 1);
 				int sde = 0;
@@ -226,50 +67,6 @@ public class Runner {
 			    return (t[0] & 1) == 0 && (t[1] & 1) == 0 && (t[2] & 1) == 0 && (t[3] & 1) == 0;
 			}
 
-			/**
-			 * Contract:
-			 *   Caller guarantees that z actually has SDE >= d 
-			 */
-			private static ZOmega reduceExactly(ZOmega z, long d) {
-			    if (d < 0) throw new IllegalArgumentException("d must be >= 0");
-			    long[] t = z.getCoeffs().clone();
-
-			    long m = d / 4;
-			    long r = d % 4;
-
-			    for (int i = 0; i < m; i++) {
-			        if (!allEven(t)) {
-			            throw new RuntimeException("Expected all-even before /2 (group-of-4 part). "
-			                    + "d=" + d + " m=" + m + " r=" + r);
-			        }
-			        t[0] /= 2; t[1] /= 2; t[2] /= 2; t[3] /= 2;
-			    }
-			    
-			    if (r > 0) {
-			    	
-			    	
-			        long need = 4 - r; 
-			        for (int k = 0; k < need; k++) {
-			        	ZOmega temp = new ZOmega(t[0], t[1], t[2], t[3]);
-			        	ZOmega DELTA = new ZOmega(1, 1, 0, 0);
-			        	ZOmega newT = temp.multiplication(DELTA);
-			            t[0] = newT.getCoeffs()[0];
-			            t[1] = newT.getCoeffs()[1];
-			            t[2] = newT.getCoeffs()[2];
-			            t[3] = newT.getCoeffs()[3];
-			        }
-			        if (!allEven(t)) {
-			            throw new RuntimeException("Expected all-even before the final /2");
-			        }
-			        t[0] /= 2; t[1] /= 2; t[2] /= 2; t[3] /= 2;
-			        
-			    }
-				
-			    return new ZOmega(t[0], t[1], t[2], t[3]);
-			}
-			
-		
-			
 			private static ZOmega convertDToZ(DOmega d) {
 				int a = d.getNumerators()[0]/d.getDenominators()[0];
 				int b = d.getNumerators()[1]/d.getDenominators()[1];
@@ -279,6 +76,42 @@ public class Runner {
 
 				
 			}
+			
+			public static cVector reduceColumnVector(cVector c) {
+				String gateSeq = "";
+					
+				while (c.getK() > 0) {
+					for (int i = 0; i < 4; i++) {
+						for (int j = 0; j < 4; j++) {
+							cVector temp = new cVector(c.getX(), c.getY(), c.getK());
+							temp.applyTGate(i);
+							temp.applyHGate();
+							temp.applyTGate(j);
+							temp.applyHGate();
+							
+							if (temp.getK() < c.getK()) {
+								c = new cVector(temp.getX(), temp.getY(), temp.getK());
+								System.out.println(c.getK());
+								gateSeq += "HT†^" + i + "HT†^" + j;
+								break;
+							}
+						}
+					}
+				}
+				if (c.getX().isZero() && !c.getY().isZero()) {
+					c.applyHGate();
+					c.applyTGate(4);
+					c.applyHGate();
+					gateSeq = gateSeq + "HT†^4H";
+				}
+					
+				
+				System.out.println("Gate Sequence:");
+				System.out.println(gateSeq);
+				return c;
+		}
+		
+	
 		    private static DOmega readDOmega() {
 		    	System.out.println("The general form of a number in D[w] is a + bw + cw^2 + dw^3");
 		    	System.out.println("Where w = e^ipi/4");
@@ -354,28 +187,6 @@ public class Runner {
 		    	}
 		    	return true;
 		    }
+		    	    		    		
 		    
-		    public static cVector randomU2Generator() {
-				DOmega a = new DOmega(1, 1, 0, 1, 0, 1, 0, 1);
-				DOmega c = new DOmega(0, 1, 0, 1, 0, 1, 0, 1);
-				cVector identity = Runner.convertToZOmega(a, c);
-				
-				String gateString = "";
-				int gateNum = (int)(Math.random()*20 + 5);
-				
-				for (int i = 0; i < gateNum; i++) {
-					identity.applyHGate();
-					int luckyT = (int)(Math.random()*8);
-					identity.applyTGate(luckyT);
-					
-					gateString = gateString + "HT^" + luckyT;
-				}
-				
-				System.out.println(gateString);
-				return identity;
-				
-			}
-		    		
-		    		
-		    
-}
+	}
