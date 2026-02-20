@@ -426,28 +426,16 @@ $$
 V_1 V_2 \cdots V_n = U^\dagger.
 $$
 
-To recover $U$, we take the dagger of the entire sequence:
+To recover $U$, we take the dagger of the entire sequence and taking the dagger of a product of matrices reverses the order too:
 
 $$
 (U^\dagger)^\dagger = U.
 $$
 
-Taking the dagger of a product of matrices reverses the order as well:
-
-$$
-(V_1 V_2 \cdots V_n)^\dagger
-=
-V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-$$
-
 Therefore,
 
 $$
-U
-=
-(V_1 V_2 \cdots V_n)^\dagger
-=
-V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
+U = (V_1 V_2 \cdots V_n)^\dagger = V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
 $$
 
 Thus, the reverse daggered sequence prepares the desired unitary from the identity.
