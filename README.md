@@ -278,7 +278,7 @@ $$
 
 ### 1. Input
 
-The user inputs the first column of a unitary matrix within the ring $\mathbb{D}[\omega]$ in the runner class by entering $4$ numerators and $4$ denominators for both column elements. 
+The user inputs the first column of a unitary matrix within the ring $\mathbb{D}[\omega]$ in the runner class by entering $4$ numerators and $4$ denominators for both column elements in the *Runner* class. 
 
 **Note: The SDE MUST be even for this implementation**
 
