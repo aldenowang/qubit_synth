@@ -150,8 +150,7 @@ $\omega^0, \omega^1, \omega^2, \omega^3$.
 Using Euler's formula,
 
 $$
-\omega^k = \cos\left(\frac{k\pi}{4}\right)
-+ i \sin\left(\frac{k\pi}{4}\right).
+\omega^k = \cos\left(\frac{k\pi}{4}\right) + i\sin\left(\frac{k\pi}{4}\right).
 $$
 
 We define
@@ -272,47 +271,55 @@ $$
 
 8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$
 
-   
+The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
 
-   Note: $H$ is a Hermitian matrix meaning
-   $$
-   H^\dagger = H.
-   $$
-   The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
-   $$
-   V_1 V_2 \cdots V_n
-   $$
-   such that
-   $$
-   (V_1 V_2 \cdots V_n)\,U = I.
-   $$
-   This implies that
-   $$
-   V_1 V_2 \cdots V_n = U^\dagger.
-   $$
-   To recover $U$, we take the dagger of the entire sequence:
-   $$
-   (U^\dagger)^\dagger = U.
-   $$
-   Taking the dagger of a product of matrices reverses the order as well:
-   $$
-   (AB)^\dagger = B^\dagger A^\dagger,
-   $$
-   and for us,
-   $$
-   (V_1 V_2 \cdots V_n)^\dagger
-   =
-   V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-   $$
-   Therefore,
-   $$
-   U
-   =
-   (V_1 V_2 \cdots V_n)^\dagger
-   =
-   V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-   $$
-   Thus, the reverse daggered sequence prepares the desired unitary from the identity.
+$$
+V_1 V_2 \cdots V_n
+$$
+
+such that
+
+$$
+(V_1 V_2 \cdots V_n)\,U = I.
+$$
+
+This implies that
+
+$$
+V_1 V_2 \cdots V_n = U^\dagger.
+$$
+
+To recover $U$, we take the dagger of the entire sequence:
+
+$$
+(U^\dagger)^\dagger = U.
+$$
+
+Taking the dagger of a product of matrices reverses the order as well:
+
+$$
+(AB)^\dagger = B^\dagger A^\dagger,
+$$
+
+and for our algorithm,
+
+$$
+(V_1 V_2 \cdots V_n)^\dagger
+=
+V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
+$$
+
+Therefore,
+
+$$
+U
+=
+(V_1 V_2 \cdots V_n)^\dagger
+=
+V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
+$$
+
+Thus, the reverse daggered sequence prepares the desired unitary from the identity.
 
    
 
