@@ -269,52 +269,8 @@ $$
 
 7. Apply the same sequence of gates to send the second column to the one state.
 
-8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$.
+8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$ (**additional info**).
 
-
-   The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
-
-$$
-V_1 V_2 \cdots V_n
-$$
-
-such that
-
-$$
-(V_1 V_2 \cdots V_n)\,U = I.
-$$
-
-This implies that
-
-$$
-V_1 V_2 \cdots V_n = U^\dagger.
-$$
-
-To recover $U$, we take the dagger of the entire sequence:
-
-$$
-(U^\dagger)^\dagger = U.
-$$
-
-Taking the dagger of a product of matrices reverses the order as well:
-
-$$
-(V_1 V_2 \cdots V_n)^\dagger
-=
-V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-$$
-
-Therefore,
-
-$$
-U
-=
-(V_1 V_2 \cdots V_n)^\dagger
-=
-V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-$$
-
-Thus, the reverse daggered sequence prepares the desired unitary from the identity.
 
 9. Return the reverse daggered gate sequence
 
@@ -449,6 +405,52 @@ This algorithm constructs a gate sequence that sends the unitary to the identity
 Finally, we reverse and dagger the gate sequence and print the output.
 
 # Additional Info
+
+### Why we reverse and dagger gate sequence
+
+  The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
+
+$$
+V_1 V_2 \cdots V_n
+$$
+
+such that
+
+$$
+(V_1 V_2 \cdots V_n)\ U = I.
+$$
+
+This implies that
+
+$$
+V_1 V_2 \cdots V_n = U^\dagger.
+$$
+
+To recover $U$, we take the dagger of the entire sequence:
+
+$$
+(U^\dagger)^\dagger = U.
+$$
+
+Taking the dagger of a product of matrices reverses the order as well:
+
+$$
+(V_1 V_2 \cdots V_n)^\dagger
+=
+V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
+$$
+
+Therefore,
+
+$$
+U
+=
+(V_1 V_2 \cdots V_n)^\dagger
+=
+V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
+$$
+
+Thus, the reverse daggered sequence prepares the desired unitary from the identity.
 
 ### Parity Patterns Modulo 2
 
