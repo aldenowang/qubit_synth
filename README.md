@@ -271,9 +271,8 @@ $$
 
 8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$.
 
-   ---
 
-The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
+   The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
 
 $$
 V_1 V_2 \cdots V_n
@@ -317,9 +316,7 @@ $$
 
 Thus, the reverse daggered sequence prepares the desired unitary from the identity.
 
-   
-
-   9. Return the reverse daggered gate sequence
+9. Return the reverse daggered gate sequence
 
 # Implementation in Java
 
