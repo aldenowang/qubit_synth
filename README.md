@@ -57,22 +57,31 @@ $$
 ### Rings
 
 We define the ring
+
 $$
 \mathbb{Z}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{Z} \,\}.
 $$
+
 where
+
 $$
 \omega = e^{i\pi/4}.
 $$
+
 Similarly, we define
+
 $$
 \mathbb{D}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{D} \,\},
 $$
+
 where $\mathbb{D}$ denotes dyadic rationals of the form
+
 $$
 \frac{P}{2^k}, \qquad P \in \mathbb{Z}, \quad k \in \mathbb{Z}_{\ge 0}.
 $$
+
 Every element of $\mathbb{Z}[\omega]$ is also an element of $\mathbb{D}[\omega]$, since
+
 $$
 \mathbb{Z} \subseteq \mathbb{D}.
 $$
