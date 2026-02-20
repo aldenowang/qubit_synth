@@ -269,7 +269,7 @@ $$
 
 7. Apply the same sequence of gates to send the second column to the one state.
 
-8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$
+##### Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$.
 
 The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
 
