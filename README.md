@@ -60,16 +60,11 @@ $$
 ### Rings
 
 We define the ring
-
 $$
 \mathbb{Z}[\omega] =
-\left\{
-a + b\omega + c\omega^2 + d\omega^3
-\;\middle|\;
-a,b,c,d \in \mathbb{Z}
-\right\},
+\{\, a + b\omega + c\omega^2 + d\omega^3
+\mid a,b,c,d \in \mathbb{Z} \,\}
 $$
-
 where
 
 $$
@@ -77,16 +72,11 @@ $$
 $$
 
 Similarly, we define
-
 $$
 \mathbb{D}[\omega] =
-\left\{
-a + b\omega + c\omega^2 + d\omega^3
-\;\middle|\;
-a,b,c,d \in \mathbb{D}
-\right\},
+\{\, a + b\omega + c\omega^2 + d\omega^3
+\mid a,b,c,d \in \mathbb{Z} \,\}
 $$
-
 where $\mathbb{D}$ denotes dyadic rationals of the form
 
 $$
@@ -285,25 +275,23 @@ $$
 $$
 
 7. The same sequence of gates will send the second column to the one state, represented as
-
    $$
-   \ket{\phi} = (0\ket{0} + \omega^j\ket{1}).
+   \lvert \phi \rangle = (0\lvert 0 \rangle + \omega^j \lvert 1 \rangle).
    $$
 
-   8. Reverse and dagger the gate sequence in order to go from $\ket{0}$ to $U\ket{0}$.  
-      Note: $H$ is a Hermitian matrix meaning
+   8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$.  
 
+   Note: $H$ is a Hermitian matrix meaning
    $$
    H^\dagger = H.
    $$
-
    The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
    $$
    V_1 V_2 \cdots V_n
    $$
    such that
    $$
-   (V_1 V_2 \cdots V_n) U = I.
+   (V_1 V_2 \cdots V_n)\,U = I.
    $$
    This implies that
    $$
@@ -317,7 +305,7 @@ $$
    $$
    (AB)^\dagger = B^\dagger A^\dagger,
    $$
-   and more generally,
+   and for us,
    $$
    (V_1 V_2 \cdots V_n)^\dagger
    =
