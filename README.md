@@ -30,10 +30,7 @@ Quantum gates are applied to qubits by left multiplication. These gates change t
 ### Unitary Matrices
 
 Quantum gates are represented as left-multiplied unitary matrices.  
-The gate must be unitary so that the total probability is preserved:
-$$
-|\alpha|^2 + |\beta|^2 = 1.
-$$
+The gate must be unitary so that the total probability is preserved
 
 We use $2 \times 2$ matrices for single-qubit synthesis because they act on a $2 \times 1$ column vector representing a single qubit.
 
@@ -61,33 +58,21 @@ $$
 
 We define the ring
 $$
-\mathbb{Z}[\omega] =
-\{\, a + b\omega + c\omega^2 + d\omega^3
-\mid a,b,c,d \in \mathbb{Z} \,\}
+\mathbb{Z}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{Z} \,\}.
 $$
 where
-
 $$
 \omega = e^{i\pi/4}.
 $$
-
 Similarly, we define
 $$
-\mathbb{D}[\omega] =
-\{\, a + b\omega + c\omega^2 + d\omega^3
-\mid a,b,c,d \in \mathbb{Z} \,\}
+\mathbb{D}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{D} \,\},
 $$
 where $\mathbb{D}$ denotes dyadic rationals of the form
-
 $$
-\frac{P}{2^k},
-\qquad
-P \in \mathbb{Z}, \quad
-k \in \mathbb{Z}_{\ge 0}.
+\frac{P}{2^k}, \qquad P \in \mathbb{Z}, \quad k \in \mathbb{Z}_{\ge 0}.
 $$
-
 Every element of $\mathbb{Z}[\omega]$ is also an element of $\mathbb{D}[\omega]$, since
-
 $$
 \mathbb{Z} \subseteq \mathbb{D}.
 $$
@@ -274,12 +259,11 @@ $$
 (\omega^j \ket{0} + 0\ket{1}).
 $$
 
-7. The same sequence of gates will send the second column to the one state, represented as
-   $$
-   \lvert \phi \rangle = (0\lvert 0 \rangle + \omega^j \lvert 1 \rangle).
-   $$
+7. Apply the same sequence of gates to send the second column to the one state.
 
-   8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$.  
+8. Reverse and dagger the gate sequence in order to go from $\lvert 0 \rangle$ to $U\lvert 0 \rangle$
+
+   
 
    Note: $H$ is a Hermitian matrix meaning
    $$
