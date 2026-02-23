@@ -59,7 +59,7 @@ $$
 We define the ring
 
 $$
-\mathbb{Z}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{Z} \,\}.
+\mathbb{Z}[\omega] = \{\ a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{Z} \,\}.
 $$
 
 where
@@ -71,7 +71,7 @@ $$
 Similarly, we define
 
 $$
-\mathbb{D}[\omega] = \{\, a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{D} \,\},
+\mathbb{D}[\omega] = \{\ a + b\omega + c\omega^2 + d\omega^3 \mid a,b,c,d \in \mathbb{D} \,\},
 $$
 
 where $\mathbb{D}$ denotes dyadic rationals of the form
@@ -104,7 +104,7 @@ $$
 Multiplication by $\frac{1}{\sqrt{2}}$ increases the smallest denominator exponent (SDE) by $2$, since
 
 $$
-\sqrt{2} \, u = \delta^2
+\sqrt{2} \ u = \delta^2
 $$
 
 in the standard $\delta$-notation used for exact synthesis.
@@ -162,11 +162,11 @@ $$
 Important identities:
 
 $$
-\delta^2 = \sqrt{2}\, u,
+\delta^2 = \sqrt{2}\ u,
 $$
 
 $$
-\delta^4 = 2\, u',
+\delta^4 = 2\ u',
 $$
 
 where $u, u'$ are units in the ring $\mathbb{Z}[\omega]$ (and therefore also units in $\mathbb{D}[\omega]$, since $\mathbb{Z}[\omega] \subset \mathbb{D}[\omega]$)
@@ -227,18 +227,20 @@ $$
 
 ​	and $k$ is what we refer to as the "SDE'' (smallest denominator exponent). Since unitary matrices preserve orthogonality the same gate sequence that works on the first column will work on the whole matrix, so it is simpler to merely look at the first column.
 
-3. For every step there exists a $T^LH$ where $L \in \{0,1,2,3\}$ can reduce the SDE by $1$. This means cancelling out one delta in
+3. For every step there is guaranteed to exist a $T^LH$ sequence where $L \in \{0,1,2,3\}$ that can reduce the SDE by 1 (refer **additional info**).
+
+    This means cancelling out one delta in
 
 $$
 \frac{1}{\delta^k}
-\left( x\ket{0} + y\ket{1} \right),
+\left( x\ket{0} + y\ket{1} \right)
 $$
 
 ​	turning it into
 
 $$
 \frac{1}{\delta^{k-1}}
-\left( x'\ket{0} + y'\ket{1} \right),
+\left( x'\ket{0} + y'\ket{1} \right)
 $$
 
 reducing the SDE by $1$. Keep in mind that a Hadamard gate raises the SDE by $2$ by introducing a $\sqrt{2}$ into the denominator which is equal to $\delta^2$. We do an SDE reduction operation after every Hadamard gate to factor out deltas and create a net SDE reduction.
@@ -246,9 +248,9 @@ reducing the SDE by $1$. Keep in mind that a Hadamard gate raises the SDE by $2$
 4. Apply the $T^LH$ sequence to $\ket{\psi}$ and reduce the column after the $H$ gate. To accurately reduce up to irrelevant global phase, utilize the equalities
 
 $$
-\sqrt{2}\, u = \delta^2
+\sqrt{2}\ u = \delta^2
 \qquad \text{and} \qquad
-2\, u' = \delta^4.
+2\ u' = \delta^4.
 $$
 
 5. Repeat steps 3 and 4 until the SDE $= 0$. This means all the entries of $\ket{\psi}$ are in the ring $\mathbb{Z}[\omega]$. We are pretty much done once the gate is in the ring $\mathbb{Z}[\omega]$ because lemma 10.1.2 in *Picturing Quantum Software* states that it must be a computational basis vector up to a global phase [2].
@@ -286,12 +288,7 @@ Each entry is read and checked by the *readDOmega()* method that uses the *TextI
 
 Each entry is followed by an $\omega$ of some power from $0$ - $3$ in order. The user enters $a, e$, then $b, f$, then $c, g$, then $d, h$. Matrix elements in the ring $\mathbb{D}[\omega]$ follow the form
 
-$$
-\frac{a}{e}
-+ \frac{b}{f}\omega
-+ \frac{c}{g}\omega^2
-+ \frac{d}{h}\omega^3
-$$
+​							$\frac{a}{e} + \frac{b}{f}\omega + \frac{c}{g}\omega^2 + \frac{d}{h}\omega^3 $
 
 where
 
@@ -446,19 +443,19 @@ To factor out a $\delta^2$ we must divide by $\sqrt{2}$. The following parity pa
 
 $$
 (\text{even},\ \text{odd},\ \text{even},\ \text{odd})^2
-\;\rightarrow\;
+\;\rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
 $$
 (\text{odd},\ \text{even},\ \text{odd},\ \text{even})^2
-\;\rightarrow\;
+\;\rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
 $$
 (\text{odd},\ \text{odd},\ \text{odd},\ \text{odd})^2
-\;\rightarrow\;
+\;\rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
@@ -547,6 +544,89 @@ Handles:
 - Polynomial arithmetic modulo $\omega^4 = -1$
 - Delta divisibility and factorization
 - Ring membership checks
+
+### Proof of Guaranteed SDE Reduction
+
+Let
+\[
+\delta = 1 + \omega,
+\qquad
+\omega = e^{i\pi/4}.
+\]
+We prove that for any $q \in D[\omega]$, there exists $k \in \mathbb{N}$ such that
+\[
+\delta^k q \in \mathbb{Z}[\omega].
+\]
+Step 1: Compute $\delta^2$
+\[
+\delta^2 = (1+\omega)^2 = 1 + 2\omega + \omega^2.
+\]
+Using the 8th root of unity relations:
+\[
+\omega^2 = i,
+\qquad
+\omega^4 = -1,
+\qquad
+\omega^8 = 1.
+\]
+From algebraic manipulation,
+								$\
+\delta^2 = \sqrt{2}\,\lambda,
+$
+
+​						where $\lambda \in \mathbb{Z}[\omega]$ is a unit.
+
+Hence
+\[
+\sqrt{2} = \frac{\delta^2}{\lambda}.
+\]
+Step 2: Proof
+
+Let
+								  $\
+q \in D[\omega].
+$
+
+Then by definition of $D[\omega]$ there exists $z \in \mathbb{Z}[\omega]$ and $n \in \mathbb{N}$ such that
+\[
+q = \frac{z}{(\sqrt{2})^n}.
+\]
+Substitute $\sqrt{2} = \frac{\delta^2}{\lambda}$:
+
+​							$\
+q
+=
+\frac{z}{\left(\frac{\delta^2}{\lambda}\right)^n}
+=
+z \frac{\lambda^n}{\delta^{2n}}.
+$
+
+Since $\lambda$ is a unit in $\mathbb{Z}[\omega]$,
+\[
+z\lambda^n \in \mathbb{Z}[\omega].
+\]
+Thus we may write
+						$\
+q = \frac{z'}{\delta^{2n}}
+\quad
+\text{for some } z' \in \mathbb{Z}[\omega].
+$
+
+Multiplying both sides by $\delta^{2n}$ gives
+\[
+\delta^{2n} q \in \mathbb{Z}[\omega].
+\]
+Let $k = 2n$. Then
+								$\
+\delta^k q \in \mathbb{Z}[\omega].
+$
+
+Conclusion:
+
+For every $q \in D[\omega]$, there exists $k \in \mathbb{N}$ such that
+\[
+\delta^k q \in \mathbb{Z}[\omega].
+\]
 
 # References
 
