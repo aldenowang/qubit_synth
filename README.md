@@ -287,9 +287,9 @@ The user inputs the first column of a unitary matrix within the ring $\mathbb{D}
 Each entry is read and checked by the *readDOmega()* method that uses the *TextIO* library input system and ensures each inputted number is in the ring.
 
 Each entry is followed by an $\omega$ of some power from $0$ - $3$ in order. The user enters $a, e$, then $b, f$, then $c, g$, then $d, h$. Matrix elements in the ring $\mathbb{D}[\omega]$ follow the form
-
-​							$$ \frac{a}{e} + \frac{b}{f}\omega + \frac{c}{g}\omega^2 + \frac{d}{h}\omega^3 $$
-
+$$
+\frac{a}{e} + \frac{b}{f}\omega + \frac{c}{g}\omega^2 + \frac{d}{h}\omega^3
+$$
 where
 
 $$
@@ -548,18 +548,17 @@ Handles:
 ### Proof of Guaranteed SDE Reduction
 
 Let
-
-​							$$ \delta = 1 + \omega, \qquad\omega = e^{i\pi/4}$$
-
-
+$$
+\delta = 1 + \omega, \qquad\omega = e^{i\pi/4}
+$$
 We prove that for any $q \in D[\omega]$, there exists $k \in \mathbb{N}$ such that
-
-​						     		$$\delta^k q \in \mathbb{Z}[\omega].$$
-
+$$
+\delta^k q \in \mathbb{Z}[\omega].
+$$
 Step 1: Compute $\delta^2$
-
-​						$$ \delta^2 = (1+\omega)^2 = 1 + 2\omega + \omega^2 $$
-
+$$
+\delta^2 = (1+\omega)^2 = 1 + 2\omega + \omega^2
+$$
 Using the 8th root of unity relations:
 $$
 \omega^2 = i,
