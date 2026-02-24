@@ -405,7 +405,7 @@ Finally, we reverse and dagger the gate sequence and print the output.
 
 # Additional Info
 
-### Why we reverse and dagger gate sequence
+##### Why we dagger the final gate sequence
 
   The constructed sequence is designed to reduce the target state to the zero state. Suppose the algorithm produces a gate sequence
 
@@ -419,20 +419,30 @@ $$
 (V_1 V_2 \cdots V_n)\ U = I.
 $$
 
-This implies that
+And because
 
+```math
+U^\dagger U = U,
+```
+
+this implies that
 $$
 V_1 V_2 \cdots V_n = U^\dagger.
 $$
 
-To recover $U$, we take the dagger of the entire sequence and taking the dagger of a product of matrices reverses the order too:
+To recover $U$, we take the dagger of the entire sequence
 
 $$
-(U^\dagger)^\dagger = U.
+(U^\dagger)^\dagger = U,
 $$
+
+and taking the dagger of a product of matrices reverses the order such that in our case:
+
+```math
+(V_1 V_2 \cdots V_n)^\dagger = V_n^\dagger \cdots V_2^\dagger V_1^\dagger
+```
 
 Therefore,
-
 $$
 U = (V_1 V_2 \cdots V_n)^\dagger = V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
 $$
@@ -463,9 +473,10 @@ $$
 
 So after squaring the cyclotomic element, the cyclotomic element is divisible by $2$.  
 This means that the cyclotomic element before being squared was divisible by
-$$
+
+```math
 \sqrt{2} = \delta^2.
-$$
+```
 
 To actually divide by $\sqrt{2}$ we use a fixed linear transformation.
 
