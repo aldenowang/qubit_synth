@@ -288,13 +288,10 @@ Each entry is read and checked by the *readDOmega()* method that uses the *TextI
 
 Each entry is followed by an $\omega$ of some power from $0$ - $3$ in order. The user enters $a, e$, then $b, f$, then $c, g$, then $d, h$. Matrix elements in the ring $\mathbb{D}[\omega]$ follow the form
 
+```math
+\frac{a}{e} + \frac{b}{f}\omega + \frac{c}{g}\omega^2 + \frac{d}{h}\omega^3
+```
 
-$$
-\frac{a}{e} + 
-\frac{b}{f}\omega + 
-\frac{c}{g}\omega^2 + 
-\frac{d}{h}\omega^3
-$$
 where
 
 $$
@@ -554,104 +551,123 @@ Handles:
 
 Let
 
-
-$$
+```math
 \delta = 1 + 
 \omega, 
 \qquad\omega = e^{i\pi/4}
-$$
+```
+
 We prove that for any $q \in D[\omega]$, there exists $k \in \mathbb{N}$ such that
 
-
-$$
+```math
 \delta^k q \in \mathbb{Z}[\omega].
-$$
+```
+
 Step One: Compute $\delta^2$
 
-
-$$
+```math
 \delta^2 = 
 (1+\omega)^2 = 
 1 + 2\omega + \omega^2
-$$
+```
+
 Using the 8th root of unity relations:
 
-
-$$
+```math
 \omega^2 = i,
 \qquad
 \omega^4 = -1,
 \qquad
 \omega^8 = 1.
-$$
+```
+
 From algebraic manipulation,
 
+```math
+\delta^2 = \sqrt{2}\ \lambda,
+```
 
-$$
-\delta^2 = \sqrt{2}\,\lambda,
-$$
 where 
-$$
-\lambda \in \mathbb{Z}[\omega]
-$$
+
+```math
+\lambda \in \mathbb{Z}[\omega] 
+```
+
 is a unit.
 
 Hence
-$$
+
+```math
 \sqrt{2} = 
 \frac{\delta^2}{\lambda}.
-$$
+```
+
 Step Two: Proof
 
 Let
-$$
+
+```math
 \
 q \in D[\omega].
-$$
+```
+
 Then by definition of $D[\omega]$ there exists $z \in \mathbb{Z}[\omega]$ and $n \in \mathbb{N}$ such that
-$$
+
+```math
 q = 
 \frac{z}{(\sqrt{2})^n}.
-$$
+```
+
 Substitute $\sqrt{2} = \frac{\delta^2}{\lambda}$:
-$$
+
+```math
 \
 q
 =
 \frac{z}{\left(\frac{\delta^2}{\lambda}\right)^n}
 =
 z \frac{\lambda^n}{\delta^{2n}}.
-$$
+```
+
 Since $\lambda$ is a unit in $\mathbb{Z}[\omega]$,
-$$
+
+```math
 z\lambda^n 
 \in \mathbb{Z}[\omega].
-$$
+```
+
 Thus we may write
-$$
+
+```math
 \
 q = \frac{z'}{\delta^{2n}}
 \quad
 \text{for some } z' \in \mathbb{Z}[\omega].
-$$
+```
+
 Multiplying both sides by $\delta^{2n}$ gives
-$$
+
+```math
 \delta^{2n} q 
 \in \mathbb{Z}[\omega].
-$$
+```
+
 Let $k = 2n$. Then
-$$
+
+```math
 \
 \delta^k q 
 \in \mathbb{Z}[\omega].
-$$
+```
+
 Conclusion:
 
 For every $q \in D[\omega]$, there exists $k \in \mathbb{N}$ such that
-$$
+
+```math
 \delta^k q 
 \in \mathbb{Z}[\omega].
-$$
+```
 
 # References
 
