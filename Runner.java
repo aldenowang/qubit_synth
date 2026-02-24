@@ -18,18 +18,23 @@ public class Runner {
 		        
 		        U2Matrix matrix = new U2Matrix(a, c);
 		        System.out.println("\nGenerated U(2) matrix:");
-		        matrix.getA().printDOmega();
-		        matrix.getB().printDOmega();
-		        matrix.getC().printDOmega();
-		        matrix.getD().printDOmega();
+		        System.out.print("a: ");   matrix.getA().printDOmega(); System.out.println("");
+		        System.out.print("b: ");   matrix.getB().printDOmega(); System.out.println("");
+		        System.out.print("c: ");   matrix.getC().printDOmega(); System.out.println("");
+		        System.out.print("d: ");   matrix.getD().printDOmega(); System.out.println("");
 		        System.out.println("");
-				
-		        boolean isUnitary = matrix.isUnitary();
-		        System.out.println("Matrix is unitary: " + isUnitary);
 		        
-		        if (isUnitary) {
+		        if (matrix.isUnitary()) {
+		        	 System.out.println("Matrix is unitary: " + matrix.isUnitary());
+		        	 System.out.println("");
 		        	 cVector co = convertToZOmega(matrix.getA(), matrix.getC());
-				     reduceColumnVector(co);
+		        	 if (co.getK() %2 != 0) {
+		        		 System.out.println("**WARNING** SDE cannot be fully reduced to 1 if it is initially odd");
+		        	 }
+				     cVector temp = reduceColumnVector(co);
+				     System.out.println("Reduced matrix in Z[w]:");
+				     temp.getX().printZOmega();
+				     temp.getY().printZOmega();
 		        }
 		        else {
 			        System.out.println("Must enter a valid unitary matrix");
@@ -45,8 +50,6 @@ public class Runner {
 					
 				DOmega delta = new DOmega(1, 1, 1, 1, 0, 1, 0, 1);
 				int sde = 0;
-				System.out.println("");
-				System.out.println("are the entries in ZOmega before delta multiplication?: " + ZOmega.isInRing(x));
 				while (ZOmega.isInRing(x) == false || ZOmega.isInRing(y) == false) {
 					DOmega tempX = x ;
 					DOmega tempY = y;
@@ -54,8 +57,7 @@ public class Runner {
 						y = tempY.multiplication(delta);
 						sde++;
 				}
-				System.out.println("are the entires in ZOmega after delta multiplicaiton: " + ZOmega.isInRing(x));
-				System.out.println("sde is: " + sde);
+				System.out.println("Initial sde is: " + sde);
 				ZOmega newX = convertDToZ(x);
 				ZOmega newY = convertDToZ(y);
 				cVector c = new cVector(newX, newY, sde);
@@ -80,7 +82,7 @@ public class Runner {
 			public static cVector reduceColumnVector(cVector c) {
 				String gateSeq = "";
 					
-				while (c.getK() > 0) {
+				while (c.getK() > 1) {
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 4; j++) {
 							cVector temp = new cVector(c.getX(), c.getY(), c.getK());
@@ -108,6 +110,7 @@ public class Runner {
 				
 				System.out.println("Gate Sequence:");
 				System.out.println(gateSeq);
+				System.out.println();
 				return c;
 		}
 		
@@ -116,7 +119,7 @@ public class Runner {
 		    	System.out.println("The general form of a number in D[w] is a + bw + cw^2 + dw^3");
 		    	System.out.println("Where w = e^ipi/4");
 		    	System.out.println("And a, b, c, d are elements of the dyadic rational numbers, which can be written as z/2^k, where z and k are integers");
-		    	System.out.println("If you don't want a specific omega just enter 0 as the numerator");
+		    	System.out.println("If you don't want a specific omega power just enter 0 as the numerator");
 		    	System.out.println("");
 		    	System.out.println("If you enter a non-integer it will be rounded DOWN to the nearest integer");
 		    	
@@ -176,7 +179,7 @@ public class Runner {
 		        
 		    	
 		        DOmega input = new DOmega(num1, denom1, num2, denom2, num3, denom3, num4, denom4);
-		        input.printDOmega();
+		        //input.printDOmega();
 		        return input;
 		    }
 		    

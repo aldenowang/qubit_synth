@@ -224,9 +224,11 @@ public class DOmega {
     
 
     public void printDOmega() {
-    	System.out.println("");
     	for (int i = 0; i < 4; i++) {
-    		System.out.print("(" + numerators[i] + "/" + denominators[i] + ")w^" + i + " + ");
+    		System.out.print(" (" + numerators[i] + "/" + denominators[i] + ")w^" + i + " ");
+    		if (i != 3) {
+    			System.out.print("+"); 		
+    		}
     	}
     }
 }
