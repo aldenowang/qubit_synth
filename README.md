@@ -426,9 +426,10 @@ U^\dagger U = U,
 ```
 
 this implies that
-$$
+
+```math
 V_1 V_2 \cdots V_n = U^\dagger.
-$$
+```
 
 To recover $U$, we take the dagger of the entire sequence
 
@@ -443,9 +444,10 @@ and taking the dagger of a product of matrices reverses the order such that in o
 ```
 
 Therefore,
-$$
+
+```math
 U = (V_1 V_2 \cdots V_n)^\dagger = V_n^\dagger \cdots V_2^\dagger V_1^\dagger.
-$$
+```
 
 Thus, the reverse daggered sequence prepares the desired unitary from the identity.
 
@@ -455,19 +457,19 @@ To factor out a $\delta^2$ we must divide by $\sqrt{2}$. The following parity pa
 
 $$
 (\text{even},\ \text{odd},\ \text{even},\ \text{odd})^2
-\;\rightarrow\
+\ \rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
 $$
 (\text{odd},\ \text{even},\ \text{odd},\ \text{even})^2
-\;\rightarrow\
+\ \rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
 $$
 (\text{odd},\ \text{odd},\ \text{odd},\ \text{odd})^2
-\;\rightarrow\
+\ \rightarrow\
 (\text{even},\ \text{even},\ \text{even},\ \text{even})
 $$
 
