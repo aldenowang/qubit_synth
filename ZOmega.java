@@ -143,7 +143,19 @@ public class ZOmega {
 	        long c = coeff[2];
 	        long d = coeff[3];
 
-	        return (a - b + c - d) == 0;
+	        return ((a + b + c - d)%2 == 0);
+	    }
+	    
+	    public static ZOmega divideByDelta(ZOmega z) {
+	        long[] t = z.getCoeffs(); 
+	        long a = t[0], b = t[1], c = t[2], d = t[3];
+
+	        long p = (a + b + d - c) / 2; 
+	        long q = b - p;
+	        long r = c - b + p;
+	        long s = d - c + b - p;
+
+	        return new ZOmega(p, q, r, s);
 	    }
 	    
 	   

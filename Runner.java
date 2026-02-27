@@ -28,13 +28,18 @@ public class Runner {
 		        	 System.out.println("Matrix is unitary: " + matrix.isUnitary());
 		        	 System.out.println("");
 		        	 cVector co = convertToZOmega(matrix.getA(), matrix.getC());
-		        	 if (co.getK() %2 != 0) {
-		        		 System.out.println("**WARNING** SDE cannot be fully reduced to 1 if it is initially odd");
-		        	 }
 				     cVector temp = reduceColumnVector(co);
-				     System.out.println("Reduced matrix in Z[w]:");
-				     temp.getX().printZOmega();
-				     temp.getY().printZOmega();
+				     
+				     if (temp.getK() == 0) {
+				    	 System.out.println("Reduced column vector in Z[w]:");
+					     temp.getX().printZOmega();
+					     temp.getY().printZOmega();
+				     } else {
+				    	 System.out.println("Reduced column vector up to SDE 1:");
+					     temp.getX().printZOmega();
+					     temp.getY().printZOmega();
+				     }
+				    
 		        }
 		        else {
 			        System.out.println("Must enter a valid unitary matrix");
@@ -57,7 +62,7 @@ public class Runner {
 						y = tempY.multiplication(delta);
 						sde++;
 				}
-				System.out.println("Initial sde is: " + sde);
+				System.out.println("Initial SDE is: " + sde);
 				ZOmega newX = convertDToZ(x);
 				ZOmega newY = convertDToZ(y);
 				cVector c = new cVector(newX, newY, sde);
@@ -93,7 +98,6 @@ public class Runner {
 							
 							if (temp.getK() < c.getK()) {
 								c = new cVector(temp.getX(), temp.getY(), temp.getK());
-								System.out.println(c.getK());
 								gateSeq += "HT†^" + i + "HT†^" + j;
 								break;
 							}
@@ -106,8 +110,17 @@ public class Runner {
 					c.applyHGate();
 					gateSeq = gateSeq + "HT†^4H";
 				}
-					
 				
+				if (c.getK() == 1 && c.getX().isDivByDelta() && c.getY().isDivByDelta()) {
+					 ZOmega x = c.getX();
+					 ZOmega y = c.getY();
+					 c.setX(x.divideByDelta(x));
+				     c.setY(y.divideByDelta(y));
+				     c.incrementK(-1);
+
+				}
+				System.out.println("Final SDE is: " + c.getK());
+			    System.out.println();
 				System.out.println("Gate Sequence:");
 				System.out.println(gateSeq);
 				System.out.println();

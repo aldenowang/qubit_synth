@@ -280,9 +280,7 @@ $$
 
 ### 1. Input
 
-The user inputs the first column of a unitary matrix within the ring $\mathbb{D}[\omega]$ in the runner class by entering $4$ numerators and $4$ denominators for both column elements in the *Runner* class. 
-
-**Note: The SDE MUST be even for this implementation**
+The user inputs the first column of a unitary matrix with entries in the ring $\mathbb{D}[\omega]$ in the runner class by entering $4$ numerators and $4$ denominators for both column elements in the *Runner* class. 
 
 Each entry is read and checked by the *readDOmega()* method that uses the *TextIO* library input system and ensures each inputted number is in the ring.
 
@@ -393,7 +391,7 @@ implemented in *reduceColumnVector()* method by brute-forcing over the $16$ poss
 
 After the second Hadamard, the cyclotomic elements have been sufficiently changed by repeated $x \pm y$ combinations and phase adjustments that, for some choice of $i$ and $j$, we can factor out both $\delta^2$ and $\delta^4$, leading to a net SDE decrease of $2$. This factorization is always possible by the lemma 10.1.3 *Picturing Quantum Software* which states that every $T^i H$ sequence can reduce the SDE by exactly $1$ [2].
 
-Because SDE is always even in this convention and strictly decreases each iteration, the reduction process terminates when SDE reaches zero. Without an SDE-contributing denominator, the column lies in the ring $\mathbb{Z}[\omega]$.
+If the SDE begins as even, the reduction process terminates when SDE reaches 0. If not, we use a parity test and solve a 4x4 linear system to solve for the coefficents after dividing by the remaining $\delta$, reducing the SDE to 0 (refer **additional info**). Without an SDE-contributing denominator, the column lies in the ring $\mathbb{Z}[\omega]$.
 
 The first column should be in the zero state. If the remaining $\mathbb{Z}[\omega]$ cyclotomic element is in the one state (bottom entry), we apply a final $HT^4H$ (an $X$ gate) to send it to the zero state. At this point, the state must be a computational basis vector up to a unit phase, in the form $\omega^j$ instead of $1$, completing the reduction.
 
@@ -532,6 +530,62 @@ v &= \frac{c - a}{2}.
 $$
 
 ---
+
+##### 
+
+### Dividing by delta
+
+Let 
+
+```math
+x=a+bω+cω^2+dω^3
+```
+
+```math
+y=p+qω+rω^2+sω^3.
+```
+
+Then multiplication by  δ = 1 + ω gives:
+
+```math
+(1+ω)y=(p−s)+(p+q)ω+(q+r)ω^2+(r+s)ω^2
+```
+
+So x is divisible by δ if and only if there exist integers p, q, r, s such that:
+
+​							a = p - s
+
+​							b = p + q
+
+​							c = q + r
+
+​							d = r + s
+
+From that:
+
+```math
+2p=a+b+d−c.
+```
+
+Therefore if (a + b + d - c) is divisible by 2, dividing by δ is possible.
+
+##### Computing the Quotient
+
+If the parity condition holds, compute:
+
+​						p = (a + b + d - c)/2
+
+​						q = b - p
+
+​						r = c - b + p
+
+​						s = d - c + b - p
+
+Then
+
+```math
+x/\delta\ = p + q\omega\ + r\omega\ ^2 + s\omega\ ^3
+```
 
 ### Supporting Ring Algebra Classes
 
